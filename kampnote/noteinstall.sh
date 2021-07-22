@@ -120,7 +120,7 @@ sudo -u kampnote wget -P $tmp_dir https://github.com/conda-forge/miniforge/relea
 echo "downloaded conda mambaforge"
 
 echo "installing conda"
-sudo -u kampnote -H bash $tmp_dir/Mambaforge-4.9.2-7--$(uname)-$(uname -m).sh -f -b 
+sudo -u kampnote -H bash $tmp_dir/Mambaforge-4.9.2-7-$(uname)-$(uname -m).sh -f -b 
 echo "installed conda"
 
 echo "start config conda env"
@@ -151,6 +151,40 @@ sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/fil
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/logo_s.png
 echo "downloaded kampnote images"
 
+echo "starting replace kampnote images..."
+sudo -u kampnote cp $tmp_dir/favicon.ico /home/kampnote/mambaforge/share/jupyterhub/static/favicon.ico
+sudo -u kampnote cp $tmp_dir/favicon.ico /home/kampnote/mambaforge/lib/python3.8/dist-packages/notebook/static/base/images/favicon.ico
+sudo -u kampnote cp $tmp_dir/favicon.ico /usr/local/lib/python3.8/dist-packages/jupyter_server/static/favicons/favicon.ico
+sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/share/jupyterhub/static/images/kampnote.png
+sudo -u kampnote mkdir /home/kampnote/mambaforge/share/jupyter/lab/static/images
+sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/share/jupyter/lab/static/images/kampnote.png
+sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/lib/python3.8/dist-packages/notebook/static/base/images/logo.png
+sudo -u kampnote cp $tmp_dir/logo_s.png /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/logo_s.png
+sudo -u kampnote cp $tmp_dir/logo_s.png /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/logo_s.png
+
+echo "#jp-MainLogo {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
+echo "  background-image: url(logo_s.png);" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
+echo "  background-repeat: no-repeat;" | sudo -u tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
+echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
+echo "#jp-MainLogo > svg {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
+echo "  visibility: hidden;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
+echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
+
+
+echo "#jp-MainLogo {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
+echo "  background-image: url(logo_s.png);" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
+echo "  background-repeat: no-repeat;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
+echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
+echo "#jp-MainLogo > svg {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
+echo "  visibility: hidden;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
+echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
+
+sudo -u kampnote sed -i 's/<title>JupyterLab<\/title>/<title>KAMP NOTE<\/title>/g' /home/kampnote/mambaforge/share/jupyter/lab/static/index.html
+
+sudo -u kampnote sed -i "s/\"default\": false/\"default\": true/g" /home/kampnote/mambaforge/share/jupyter/lab/schemas/@jupyterlab/extensionmanager-extension/plugin.json
+sudo -u kampnote sed -i "s/\"default\": \"en\"/\"default\": \"ko_KR\"/g" /home/kampnote/mambaforge/share/jupyter/lab/schemas/@jupyterlab/translation-extension/plugin.json
+
+
 echo "downloading kampnote config file"
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/config.py
 echo "downloaded kampnote config file"
@@ -167,8 +201,9 @@ echo "downloaded kampnote service file"
 
 sudo cp $local_tmp_dir/kampnote.service /etc/systemd/system/kampnote.service
 
-
+echo "starting kampnote service..."
 sudo systemctl daemon-reload
 sudo systemctl enable kampnote.service
 sudo systemctl start kampnote.service
+echo "started kampnote service - http://[floating ip]:8000"
 
