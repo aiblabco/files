@@ -201,9 +201,6 @@ echo "downloaded kampnote service file"
 
 sudo cp $local_tmp_dir/kampnote.service /etc/systemd/system/kampnote.service
 
-echo "new password kampuser account"
-sudo passwd kampuser
-
 echo "starting kampnote service..."
 sudo systemctl daemon-reload
 sudo systemctl enable kampnote.service
