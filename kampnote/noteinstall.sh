@@ -140,19 +140,19 @@ echo "installed jupyter packages"
 
 
 echo "downloading jupyterlab ko language pack"
-sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
+sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
 echo "downloaded jupyterlab ko language pack"
 
 sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install -P $tmp_dir/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
 
 echo "downloading kampnote images"
-sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/images/favicon.ico
-sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/images/kampnote.png
-sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/images/logo_s.png
+sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/favicon.ico
+sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/kampnote.png
+sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/logo_s.png
 echo "downloaded kampnote images"
 
 echo "downloading kampnote config file"
-sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/config.py
+sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/config.py
 echo "downloaded kampnote config file"
 
 if notExistsFolder '/home/kampnote/jupyterconfig'; then    
@@ -162,7 +162,7 @@ sudo -u kampnote -H cp $tmp_dir/config.py /home/kampnote/jupyterconfig/
 
 local_tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 echo "downloading kampnote service file"
-wget -P $local_tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/kampnote.service
+wget -P $local_tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/kampnote.service
 echo "downloaded kampnote service file"
 
 sudo cp $local_tmp_dir/kampnote.service /etc/systemd/system/kampnote.service
