@@ -1,0 +1,174 @@
+#!/bin/bash
+
+function notExistsFile() {
+    if test -f "$1"; then
+        return 1
+    else
+        return 0
+    fi
+}
+function existsFile() {
+    if test -f "$1"; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function notExistsFolder() {
+    if test -d "$1"; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+function existsFolder() {
+    if test -d "$1"; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function notInstalledPackage() {
+    if dpkg -s "$1" > /dev/null 2>&1; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+function notExistsUser() {
+    if id "$1" &> /dev/null; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+if systemctl status kampnote.service > /dev/null 2>&1; then
+    echo "previous removed kampnote service"
+    sudo systemctl stop kampnote.service
+    sudo systemctl disable kampnote.service
+fi
+
+if notInstalledPackage 'libcudnn8'; then
+    sudo apt-get install -y libcudnn8=8.0.5.39-1+cuda11.0
+    echo "installed libcudnn8"
+else
+    echo "founded libcudnn8 package"
+fi
+if notExistsFile '/etc/apt/sources.list.d/nodesource.list'; then
+    echo "nodejs deb downloading..."
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
+    echo "installed nodejs deb"
+else
+    echo "founded nodejs deb"
+fi
+if notInstalledPackage 'git'; then
+    sudo apt-get install -y git
+    echo "installed git package"
+else
+    echo "founded git package"
+fi
+if notInstalledPackage 'nodejs'; then
+    sudo apt-get install -y nodejs
+    echo "installed nodejs package"
+else
+    echo "founded nodejs package"
+fi
+if notExistsFolder '/usr/lib/node_modules/configurable-http-proxy'; then
+    sudo npm install --cache /tmp/empty-cache -g configurable-http-proxy
+    echo "installed npm configurable-http-proxy"
+else
+    echo "founded npm configurable-http-proxy"
+fi
+
+if sudo grep -q 'kampnote' /etc/sudoers; then
+    echo 'kampnote sudoers exists'
+else
+    sudo chmod 0640 /etc/sudoers
+    echo 'kampnote ALL=(%users) NOPASSWD: ALL' | sudo tee -a /etc/sudoers
+    sudo chmod 0440 /etc/sudoers
+    echo 'added kampnote sudoers'
+fi
+
+if notExistsUser 'kampnote'; then
+    sudo useradd -m -s /bin/bash -G shadow -p $(openssl passwd -1 kampnote) kampnote
+    echo 'user added kampnote'
+else
+    echo 'founded user kampnote'
+fi
+
+if notExistsUser 'kampuser'; then
+    sudo useradd -m -s /bin/bash -G users -p $(openssl passwd -1 kampuser) kampuser
+    echo 'user added kampuser'
+else
+    echo 'founded user kampuser'
+fi
+
+if existsFolder '/home/kampnote/mambaforge'; then
+    sudo rm -rf /home/kampnote/.cache &> /dev/null
+    sudo rm -rf /home/kampnote/.conda &> /dev/null
+    sudo rm -rf /home/kampnote/mambaforge &> /dev/null
+fi
+
+tmp_dir=$(sudo -u kampnote mktemp -d -t ci-XXXXXXXXXX)
+echo "downloading conda mambaforge"
+sudo -u kampnote wget -P $tmp_dir https://github.com/conda-forge/miniforge/releases/download/4.9.2-7/Mambaforge-4.9.2-7-$(uname)-$(uname -m).sh
+echo "downloaded conda mambaforge"
+
+echo "installing conda"
+sudo -u kampnote -H bash $tmp_dir/Mambaforge-4.9.2-7--$(uname)-$(uname -m).sh -f -b 
+echo "installed conda"
+
+echo "start config conda env"
+echo "conda 4.9.2" | sudo -u kampnote -H tee -a /home/kampnote/mambaforge/conda-meta/pinned
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/conda config --system --set auto_update_conda false
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/conda config --system --set show_channel_urls true 
+
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/conda init bash
+echo "end config conda env"
+
+echo "installing tensorflow"
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install tensorflow==2.4.1
+echo "installed tensorflow"
+echo "installing jupyter packages"
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/conda install -y jupyterhub=1.4.1 sudospawner==0.5.2 jupyterlab==3.0.16
+echo "installed jupyter packages"
+
+
+echo "downloading jupyterlab ko language pack"
+sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
+echo "downloaded jupyterlab ko language pack"
+
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install -P $tmp_dir/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
+
+echo "downloading kampnote images"
+sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/images/favicon.ico
+sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/images/kampnote.png
+sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/images/logo_s.png
+echo "downloaded kampnote images"
+
+echo "downloading kampnote config file"
+sudo -u kampnote wget -P $tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/config.py
+echo "downloaded kampnote config file"
+
+if notExistsFolder '/home/kampnote/jupyterconfig'; then    
+    sudo -u kampnote -H mkdir /home/kampnote/jupyterconfig
+fi
+sudo -u kampnote -H cp $tmp_dir/config.py /home/kampnote/jupyterconfig/
+
+local_tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
+echo "downloading kampnote service file"
+wget -P $local_tmp_dir https://github.com/aiblabco/files/blob/main/kampnote/kampnote.service
+echo "downloaded kampnote service file"
+
+sudo cp $local_tmp_dir/kampnote.service /etc/systemd/system/kampnote.service
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable kampnote.service
+sudo systemctl start kampnote.service
+
