@@ -47,6 +47,8 @@ function notExistsUser() {
     fi
 }
 
+
+
 if systemctl status kampnote.service > /dev/null 2>&1; then
     echo "previous removed kampnote service"
     sudo systemctl stop kampnote.service
@@ -145,6 +147,12 @@ echo "downloaded jupyterlab ko language pack"
 
 sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install -P $tmp_dir/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
 
+echo "downloading kampauth pack"
+sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/kampauth-0.1.0-py2.py3-none-any.whl
+echo "downloaded kampauth pack"
+
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install -P $tmp_dir/kampauth-0.1.0-py2.py3-none-any.whl
+
 echo "downloading kampnote images"
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/favicon.ico
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/kampnote.png
@@ -188,6 +196,11 @@ sudo -u kampnote sed -i "s/\"default\": \"en\"/\"default\": \"ko_KR\"/g" /home/k
 echo "downloading kampnote config file"
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/config.py
 echo "downloaded kampnote config file"
+
+echo "downloading kampnote config file"
+read allowedcmpuser
+sudo -u kampnote sed -i "s/{CMPUSER}/$allowedcmpuser/g" $tmp_dir/config.py
+echo "downloading kampnote config file"
 
 if notExistsFolder '/home/kampnote/jupyterconfig'; then    
     sudo -u kampnote -H mkdir /home/kampnote/jupyterconfig
