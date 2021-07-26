@@ -97,6 +97,14 @@ else
     sudo chmod 0440 /etc/sudoers
     echo 'added kampnote sudoers'
 fi
+if sudo grep -q 'kampuser' /etc/sudoers; then
+    echo 'kampuser sudoers exists'
+else
+    sudo chmod 0640 /etc/sudoers
+    echo 'kampuser ALL=(%users) NOPASSWD: ALL' | sudo tee -a /etc/sudoers
+    sudo chmod 0440 /etc/sudoers
+    echo 'added kampuser sudoers'
+fi
 
 if notExistsUser 'kampnote'; then
     sudo useradd -m -s /bin/bash -G shadow -p $(openssl passwd -1 kampnote) kampnote
