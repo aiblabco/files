@@ -162,7 +162,7 @@ echo "downloaded kampnote images"
 echo "starting replace kampnote images..."
 sudo -u kampnote cp $tmp_dir/favicon.ico /home/kampnote/mambaforge/share/jupyterhub/static/favicon.ico
 sudo -u kampnote cp $tmp_dir/favicon.ico /home/kampnote/mambaforge/lib/python3.8/dist-packages/notebook/static/base/images/favicon.ico
-sudo -u kampnote cp $tmp_dir/favicon.ico /usr/local/lib/python3.8/dist-packages/jupyter_server/static/favicons/favicon.ico
+sudo -u kampnote cp $tmp_dir/favicon.ico /home/kampnote/mambaforge/lib/python3.8/dist-packages/jupyter_server/static/favicons/favicon.ico
 sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/share/jupyterhub/static/images/kampnote.png
 sudo -u kampnote mkdir /home/kampnote/mambaforge/share/jupyter/lab/static/images
 sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/share/jupyter/lab/static/images/kampnote.png
@@ -197,10 +197,10 @@ echo "downloading kampnote config file"
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/config.py
 echo "downloaded kampnote config file"
 
-echo "downloading kampnote config file"
+echo "input yours cmp userid ..."
 read allowedcmpuser
 sudo -u kampnote sed -i "s/{CMPUSER}/$allowedcmpuser/g" $tmp_dir/config.py
-echo "downloading kampnote config file"
+echo "$allowedcmpuser only allow cmp userid saved"
 
 if notExistsFolder '/home/kampnote/jupyterconfig'; then    
     sudo -u kampnote -H mkdir /home/kampnote/jupyterconfig
