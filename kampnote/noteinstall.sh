@@ -47,7 +47,7 @@ function notExistsUser() {
     fi
 }
 
-echo "input yours cmp userid ..."
+echo -n "typing yours cmp login id ... > "
 read allowedcmpuser
 
 
@@ -179,23 +179,24 @@ sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/share/jupyte
 sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/lib/python3.8/site-packages/notebook/static/base/images/logo.png
 sudo -u kampnote cp $tmp_dir/logo_s.png /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/logo_s.png
 sudo -u kampnote cp $tmp_dir/logo_s.png /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/logo_s.png
+echo "ended replace kampnote images..."
 
-echo "#jp-MainLogo {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
-echo "  background-image: url(logo_s.png);" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
-echo "  background-repeat: no-repeat;" | sudo -u tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
-echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
-echo "#jp-MainLogo > svg {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
-echo "  visibility: hidden;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
-echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css > /dev/null
+echo "#jp-MainLogo {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css 
+echo "  background-image: url(logo_s.png);" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css 
+echo "  background-repeat: no-repeat;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css 
+echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css 
+echo "#jp-MainLogo > svg {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css 
+echo "  visibility: hidden;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css
+echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css
 
 
-echo "#jp-MainLogo {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
-echo "  background-image: url(logo_s.png);" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
-echo "  background-repeat: no-repeat;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
-echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
-echo "#jp-MainLogo > svg {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
-echo "  visibility: hidden;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
-echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css > /dev/null
+echo "#jp-MainLogo {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css 
+echo "  background-image: url(logo_s.png);" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css 
+echo "  background-repeat: no-repeat;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css 
+echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css 
+echo "#jp-MainLogo > svg {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css 
+echo "  visibility: hidden;" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css 
+echo "}" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/index.css
 
 sudo -u kampnote sed -i 's/<title>JupyterLab<\/title>/<title>KAMP NOTE<\/title>/g' /home/kampnote/mambaforge/share/jupyter/lab/static/index.html
 
