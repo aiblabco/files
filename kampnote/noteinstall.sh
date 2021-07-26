@@ -145,13 +145,13 @@ echo "downloading jupyterlab ko language pack"
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
 echo "downloaded jupyterlab ko language pack"
 
-sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install -P $tmp_dir/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install $tmp_dir/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
 
 echo "downloading kampauth pack"
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/kampauth-0.1.0-py2.py3-none-any.whl
 echo "downloaded kampauth pack"
 
-sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install -P $tmp_dir/kampauth-0.1.0-py2.py3-none-any.whl
+sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install $tmp_dir/kampauth-0.1.0-py2.py3-none-any.whl
 
 echo "downloading kampnote images"
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/favicon.ico
