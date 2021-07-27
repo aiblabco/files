@@ -76,12 +76,27 @@ if notInstalledPackage 'git'; then
 else
     echo "founded git package"
 fi
+if notInstalledPackage 'kmod'; then
+    sudo apt-get install -y kmod
+    echo "installed kmod package"
+else
+    echo "founded kmod package"
+fi
+if notInstalledPackage 's3fs'; then
+    sudo apt-get install -y s3fs
+    echo "installed s3fs package"
+else
+    echo "founded s3fs package"
+fi
+
 if notInstalledPackage 'nodejs'; then
     sudo apt-get install -y nodejs
     echo "installed nodejs package"
 else
     echo "founded nodejs package"
 fi
+
+
 if notExistsFolder '/usr/lib/node_modules/configurable-http-proxy'; then
     sudo npm install --cache /tmp/empty-cache -g configurable-http-proxy
     echo "installed npm configurable-http-proxy"
@@ -97,14 +112,14 @@ else
     sudo chmod 0440 /etc/sudoers
     echo 'added kampnote sudoers'
 fi
-if sudo grep -q 'kampuser' /etc/sudoers; then
-    echo 'kampuser sudoers exists'
-else
-    sudo chmod 0640 /etc/sudoers
-    echo 'kampuser ALL=(%users) NOPASSWD: ALL' | sudo tee -a /etc/sudoers
-    sudo chmod 0440 /etc/sudoers
-    echo 'added kampuser sudoers'
-fi
+#if sudo grep -q 'kampuser' /etc/sudoers; then
+#    echo 'kampuser sudoers exists'
+#else
+#    sudo chmod 0640 /etc/sudoers
+#    echo 'kampuser ALL=(%users) NOPASSWD: ALL' | sudo tee -a /etc/sudoers
+#    sudo chmod 0440 /etc/sudoers
+#    echo 'added kampuser sudoers'
+#fi
 
 if notExistsUser 'kampnote'; then
     sudo useradd -m -s /bin/bash -G shadow -p $(openssl passwd -1 kampnote) kampnote
@@ -152,7 +167,7 @@ echo "installed jupyter packages"
 
 
 echo "downloading jupyterlab ko language pack"
-sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
+sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
 echo "downloaded jupyterlab ko language pack"
 
 sudo -u kampnote -H /home/kampnote/mambaforge/bin/pip install $tmp_dir/jupyterlab_language_pack_ko_KR-0.0.1.dev0-py2.py3-none-any.whl
