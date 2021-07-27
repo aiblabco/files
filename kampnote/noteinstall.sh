@@ -184,6 +184,7 @@ echo "downloading kampnote images"
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/favicon.ico
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/kampnote.png
 sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/images/logo_s.png
+sudo -u kampnote wget -P $tmp_dir https://raw.githubusercontent.com/aiblabco/files/main/kampnote/login.html
 echo "downloaded kampnote images"
 
 echo "starting replace kampnote images..."
@@ -196,6 +197,8 @@ sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/share/jupyte
 sudo -u kampnote cp $tmp_dir/kampnote.png /home/kampnote/mambaforge/lib/python3.8/site-packages/notebook/static/base/images/logo.png
 sudo -u kampnote cp $tmp_dir/logo_s.png /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/logo_s.png
 sudo -u kampnote cp $tmp_dir/logo_s.png /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-dark-extension/logo_s.png
+
+sudo -u kampnote cp $tmp_dir/login.html /home/kampnote/mambaforge/share/jupyterhub/templates/login.html
 echo "ended replace kampnote images..."
 
 echo "#jp-MainLogo {" | sudo -u kampnote tee -a /home/kampnote/mambaforge/share/jupyter/lab/themes/@jupyterlab/theme-light-extension/index.css 
