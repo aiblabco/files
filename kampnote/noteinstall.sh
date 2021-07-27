@@ -47,7 +47,8 @@ function notExistsUser() {
     fi
 }
 
-echo -n "typing yours cmp login id ... > "
+echo "input cmp login id "
+echo -n "CMP LOGIN ID: "
 read allowedcmpuser
 
 
@@ -245,4 +246,4 @@ sudo systemctl enable kampnote.service
 sudo systemctl start kampnote.service
 echo "started kampnote service - http://[floating ip]:8000"
 
-sudo -u kampuser kampmount
+sudo -u kampuser /home/kampnote/mambaforge/bin/kampmount
