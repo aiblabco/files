@@ -156,6 +156,7 @@ sudo -u kampnote -H /home/kampnote/mambaforge/bin/conda config --system --set au
 sudo -u kampnote -H /home/kampnote/mambaforge/bin/conda config --system --set show_channel_urls true 
 
 sudo -u kampnote -H /home/kampnote/mambaforge/bin/conda init bash
+sudo -u kampuser -H /home/kampnote/mambaforge/bin/conda init bash
 echo "end config conda env"
 
 echo "installing tensorflow"
@@ -244,3 +245,4 @@ sudo systemctl enable kampnote.service
 sudo systemctl start kampnote.service
 echo "started kampnote service - http://[floating ip]:8000"
 
+sudo -u kampuser kampmount
